@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+	<title>Gap or Lap?</title>
+	<link rel="stylesheet" type="text/css" href="app.css">
+	<script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+	<h1>Gap or Lap?</h1>
+	<div id="app">
+		<textarea class="input" v-model="input"></textarea>
+		<p class="output">{{ output() }}</p>
+	</div>
+	<script>
+		
+		var testInput = "(08:00 - 11:30) (12:00 - 14:00) (15:00 - 16:00)\n(14:00 - 15:00)";
+
+		var app = new Vue({
+			el: '#app',
+			data: {
+				input: testInput
+			},
+			methods: {
+				output: function() {
+					return this.input;
+				}
+			}
+		});
+
+	</script>
+</body>
+</html>
