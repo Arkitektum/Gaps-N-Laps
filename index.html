@@ -10,10 +10,35 @@
 	<h1>Gap or Lap?</h1>
 	<div id="app">
 		<textarea class="input" v-model="input"></textarea>
-		<p class="output">{{ output() }}</p>
+		<div class="timeline">
+			<span class="timespan" v-for="timespan in getTimespans()">{{ timespan }}</span>
+		</div>
 	</div>
 	<script>
 		
+		function getTripleTexTimespanItems(input){
+
+			const regex = /\(([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9] - ([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]\)/g;
+			let m;
+			var timespanItems = [];
+
+			while ((m = regex.exec(input)) !== null) {
+
+				if (m.index === regex.lastIndex)
+					regex.lastIndex++;
+
+				m.forEach((match, groupIndex) => {
+
+					if(groupIndex == 0)
+						timespanItems.push(match);
+
+					console.log(`Found match, group ${groupIndex}: ${match}`);
+				});
+			}
+
+			return timespanItems;
+		}
+
 		var testInput = "(08:00 - 11:30) (12:00 - 14:00) (15:00 - 16:00)\n(14:00 - 15:00)";
 
 		var app = new Vue({
@@ -22,8 +47,14 @@
 				input: testInput
 			},
 			methods: {
-				output: function() {
-					return this.input;
+				getTimespans: function() {
+
+					var tripleTexTimeSpanItems = getTripleTexTimespanItems(this.input);
+
+					// Convert ...
+
+					return tripleTexTimeSpanItems;
+					
 				}
 			}
 		});
