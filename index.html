@@ -11,50 +11,87 @@
 	<div id="app">
 		<textarea class="input" v-model="input"></textarea>
 		<div class="timeline">
-			<span class="timespan" v-for="timespan in getTimespans()">{{ timespan }}</span>
-		</div>
+			<timespan
+			v-for="timespan in getTimespans()"
+			v-bind:timespan="timespan"
+			v-bind:key="timespan.id"
+			class="timespan">
+		</timespan>
 	</div>
-	<script>
+</div>
+<script>
+
+	function getTimespanObjects(input) {
+
+		const regex = /\(([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]) - ([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])\)/g;
+		let m;
+		var timespanObjects = [];
+		var groupCount = 0;
 		
-		function getTripleTexTimespanItems(input){
+		while ((m = regex.exec(input)) !== null) {
 
-			const regex = /\(([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9] - ([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]\)/g;
-			let m;
-			var timespanItems = [];
+			if (m.index === regex.lastIndex)
+				regex.lastIndex++;
 
-			while ((m = regex.exec(input)) !== null) {
+			groupCount ++;
+			var startHours;
+			var startMinutes;
+			var endHours;
+			var endMinutes;
 
-				if (m.index === regex.lastIndex)
-					regex.lastIndex++;
+			m.forEach((match, groupIndex) => {
 
-				m.forEach((match, groupIndex) => {
+				if(groupIndex == 1)
+					startHours = match;
 
-					if(groupIndex == 0)
-						timespanItems.push(match);
+				if(groupIndex == 2)
+					startMinutes = match;
 
-					console.log(`Found match, group ${groupIndex}: ${match}`);
-				});
-			}
+				if(groupIndex == 3)
+					endHours = match;
 
-			return timespanItems;
-		}
+				if(groupIndex == 4) {
 
-		var testInput = "(08:00 - 11:30) (12:00 - 14:00) (15:00 - 16:00)\n(14:00 - 15:00)";
+					endMinutes = match;
 
-		var app = new Vue({
-			el: '#app',
-			data: {
-				input: testInput
-			},
-			methods: {
-				getTimespans: function() {
+					var timespanObject = {
+						"id": groupCount,
+						"start": new Date(null, null, null, startHours, startMinutes),
+						"end": new Date(null, null, null, endHours, endMinutes),
+					};
 
-					var tripleTexTimeSpanItems = getTripleTexTimespanItems(this.input);
+					timespanObjects.push(timespanObject);
+				}
+
+				console.log(`Found match, group ${groupIndex}: ${match}`);
+			});
+		};
+
+		return timespanObjects;
+	}
+
+	var testInput = "(08:00 - 11:30) (12:00 - 14:00) (15:00 - 16:00)\n(14:00 - 15:00)";
+
+
+	Vue.component('timespan', {
+		props: ['timespan'],
+		template: '<p>{{ timespan.start.toLocaleTimeString() }} - {{ timespan.end.toLocaleTimeString() }}</p>'
+	});
+
+	var app = new Vue({
+		el: '#app',
+		data: {
+			input: testInput
+		},
+		methods: {
+			getTimespans: function() {
+
+				var timespanObjects = getTimespanObjects(this.input);
 
 					// Convert ...
 
-					return tripleTexTimeSpanItems;
 					
+					return timespanObjects;
 				}
 			}
 		});
