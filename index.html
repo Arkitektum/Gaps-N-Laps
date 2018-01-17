@@ -12,10 +12,9 @@
 		<textarea class="input" v-model="input"></textarea>
 		<svg class="timeline">
 			<timespan
-			v-for="(timespan, index) in getTimespans()"
+			v-for="(timespan, key) in getTimespans()"
 			v-bind:timespan="timespan"
-			v-bind:index="index"
-			v-bind:key="index"
+			v-bind:key="key"
 			class="timespan">
 		</timespan>
 	</svg>
@@ -23,7 +22,7 @@
 <script>
 
 	Vue.component('timespan', {
-		props: ['timespan', 'index'],
+		props: ['timespan'],
 		methods: {
 			getStartPos: function() {
 				var firstTimespan = this.$root.getFirstTimespan();
@@ -33,7 +32,7 @@
 				return (this.timespan.end.getTime() - this.timespan.start.getTime()) / 50000;
 			}
 		},
-		template: '<rect v-bind:x="getStartPos()" v-bind:y="index * 30" v-bind:width="getSpan()" height="30" style="fill:rgb(128,128,255)" />'
+		template: '<rect v-bind:x="getStartPos()" v-bind:width="getSpan()" height="30" style="fill:rgba(255,0,0,0.5); stroke-width:1; stroke:rgb(100,100,100)" />'
 	});
 
 	var app = new Vue({
