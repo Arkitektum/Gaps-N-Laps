@@ -2,3 +2,9 @@
 	width: 1200px;
 	height: 200px;
 }
+
+.timeline {
+	display: block;
+	margin-top: 30px;
+	width: 1200px;
+}
