@@ -12,13 +12,12 @@
 		<textarea class="input" v-model="input"></textarea>
 		<svg class="timeline">
 			<timespan
-			v-for="(timespan, key) in getTimespans()"
-			v-bind:timespan="timespan"
-			v-bind:key="key"
-			class="timespan">
-		</timespan>
-	</svg>
-</div>
+			    v-for="(timespan, key) in getTimespans()"
+			    v-bind:timespan="timespan"
+			    v-bind:key="key"
+			    class="timespan">
+		    </timespan>
+	    </svg>
 <script>
 
 	Vue.component('timespan', {
