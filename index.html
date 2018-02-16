@@ -12,26 +12,26 @@
 		<textarea class="input" v-model="input"></textarea>
 		<svg class="timeline">
 			<timespan
-			    v-for="(timespan, key) in getTimespans()"
-			    v-bind:timespan="timespan"
-			    v-bind:key="key"
-			    class="timespan">
-		    </timespan>
-	    </svg>
-	    <div> 
-	    	<p v-show="totalTime != '0:0'">Totaltid: {{ totalTime }}</p> 
-	    </div> 
-	    <div class="demo-images">
-	    	<figure>
-	    		<figcaption><b>A)</b> Kopier timeføringer for aktuell dag slik at klokkeslettene kommer med</figcaption>
-	    		<img src="demo-cut.png" alt="Cut">
-	    	</figure>
-	        <figure>
-	    		<figcaption><b>B)</b> Lim teksten inn i vinduet over og kontroller tidslinjen for gaps n' laps ;-)</figcaption>
-	    		<img src="demo-paste.png" alt="Paste">
-	    	</figure>
-	    </div>
-    </div>
+			v-for="(timespan, key) in getTimespans()"
+			v-bind:timespan="timespan"
+			v-bind:key="key"
+			class="timespan">
+		</timespan>
+	</svg>
+	<div> 
+		<p v-show="totalTime != '0:0'">Totaltid: {{ totalTime }}</p> 
+	</div> 
+	<div class="demo-images">
+		<figure>
+			<figcaption><b>A)</b> Kopier timeføringer for aktuell dag slik at klokkeslettene kommer med</figcaption>
+			<img src="demo-cut.png" alt="Cut">
+		</figure>
+		<figure>
+			<figcaption><b>B)</b> Lim teksten inn i vinduet over og kontroller tidslinjen for gaps n' laps ;-)</figcaption>
+			<img src="demo-paste.png" alt="Paste">
+		</figure>
+	</div>
+</div>
 <script>
 
 	Vue.component('timespan', {
@@ -104,6 +104,16 @@
 			getFirstTimespan: function() {
 				return this.getTimespans()[0];
 			},
+			secondsToHoursAndSeconds: function(seconds) {
+
+				var hours = Math.floor(seconds / (1000 * 60 * 60));
+				seconds -= hours * (1000 * 60 * 60);
+
+				var mins = Math.floor(seconds / (1000 * 60));
+				seconds -= mins * (1000 * 60);
+
+				return hours + ":" + mins;
+			},
 		},
 		computed: {
 			totalTime: function() {
@@ -114,13 +124,7 @@
 					totalTime += timespan.end - timespan.start;
 				});
 
-				var hours = Math.floor(totalTime / (1000 * 60 * 60));
-				totalTime -= hours * (1000 * 60 * 60);
-
-				var mins = Math.floor(totalTime / (1000 * 60));
-				totalTime -= mins * (1000 * 60);
-
-				return hours + ":" + mins;
+				return this.secondsToHoursAndSeconds(totalTime);
 			},
 		}
 	});
