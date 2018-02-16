@@ -18,6 +18,9 @@
 			    class="timespan">
 		    </timespan>
 	    </svg>
+	    <div> 
+	    	<p v-show="totalTime != '0:0'">Totaltid: {{ totalTime }}</p> 
+	    </div> 
 	    <div class="demo-images">
 	    	<figure>
 	    		<figcaption><b>A)</b> Kopier timeføringer for aktuell dag slik at klokkeslettene kommer med</figcaption>
@@ -100,6 +103,24 @@
 			},
 			getFirstTimespan: function() {
 				return this.getTimespans()[0];
+			},
+		},
+		computed: {
+			totalTime: function() {
+				
+				var totalTime = 0;
+
+				this.getTimespans().forEach(function(timespan) {
+					totalTime += timespan.end - timespan.start;
+				});
+
+				var hours = Math.floor(totalTime / (1000 * 60 * 60));
+				totalTime -= hours * (1000 * 60 * 60);
+
+				var mins = Math.floor(totalTime / (1000 * 60));
+				totalTime -= mins * (1000 * 60);
+
+				return hours + ":" + mins;
 			},
 		}
 	});
