@@ -38,7 +38,7 @@
 		props: ['timespan'],
 		methods: {
 			getStartPos: function() {
-				var firstTimespan = this.$root.getFirstTimespan();
+				var firstTimespan = this.$root.timespans[0];
 				return (this.timespan.start.getTime() - firstTimespan.start.getTime()) / 50000;
 			},
 			getSpan: function() {
@@ -54,9 +54,6 @@
 			input: '',
 		},
 		methods: {
-			getFirstTimespan: function() {
-				return this.timespans[0];
-			},
 			secondsToHoursAndSeconds: function(seconds) {
 
 				var hours = Math.floor(seconds / (1000 * 60 * 60));
