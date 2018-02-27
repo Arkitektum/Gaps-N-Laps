@@ -21,6 +21,7 @@
 	<div> 
 		<p v-show="totalWorkTime != '0:0'">Total arbeidstid: {{ totalWorkTime }}</p> 
 		<p v-show="totalGapTime != '0:0'">Total glipe-tid: {{ totalGapTime }}</p>
+		<p v-show="totalOverlapTime != '0:0'">Total overlapp-tid: {{ totalOverlapTime }}</p>
 	</div> 
 	<div class="demo-images">
 		<figure>
@@ -55,6 +56,24 @@
 			input: '',
 		},
 		methods: {
+			totalSeparationTimes: function() {
+				
+				var totalPositiveSeparationTime = 0;
+				var totalNegativeSeparationTime = 0;
+
+				for (var i = this.timespans.length-1; i > 0; i--) {
+					
+					var separationTime = this.timespans[i].start - this.timespans[i-1].end
+
+					if (separationTime > 0)
+						totalPositiveSeparationTime += separationTime;
+
+					if (separationTime < 0)
+						totalNegativeSeparationTime += 1 - separationTime;
+				}
+
+				return {"totalPositiveSeparationTime": totalPositiveSeparationTime, "totalNegativeSeparationTime": totalNegativeSeparationTime};
+			},
 			secondsToHoursAndSeconds: function(seconds) {
 
 				var hours = Math.floor(seconds / (1000 * 60 * 60));
@@ -82,17 +101,15 @@
 			},
 			totalGapTime: function() {
 				
-				var totalGapTime = 0;
-
-				for (var i = this.timespans.length-1; i > 0; i--) {
-					
-					var gapTime = this.timespans[i].start - this.timespans[i-1].end
-
-					if (gapTime > 0)
-						totalGapTime += gapTime;
-				}
+				var totalGapTime = this.totalSeparationTimes().totalPositiveSeparationTime
 
 				return this.secondsToHoursAndSeconds(totalGapTime);
+			},
+			totalOverlapTime: function() {
+
+				var totalOverlapTime = this.totalSeparationTimes().totalNegativeSeparationTime
+
+				return this.secondsToHoursAndSeconds(totalOverlapTime);
 			},
 		}
 	});
