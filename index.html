@@ -20,6 +20,7 @@
 	</svg>
 	<div> 
 		<p v-show="totalTime != '0:0'">Totaltid: {{ totalTime }}</p> 
+		<p v-show="totalGapTime != '0:0'">Total glipe-tid: {{ totalGapTime }}</p>
 	</div> 
 	<div class="demo-images">
 		<figure>
@@ -78,6 +79,20 @@
 				});
 
 				return this.secondsToHoursAndSeconds(totalTime);
+			},
+			totalGapTime: function() {
+				
+				var totalGapTime = 0;
+
+				for (var i = this.timespans.length-1; i > 0; i--) {
+					
+					var gapTime = this.timespans[i].start - this.timespans[i-1].end
+
+					if (gapTime > 0)
+						totalGapTime += gapTime;
+				}
+
+				return this.secondsToHoursAndSeconds(totalGapTime);
 			},
 		}
 	});
