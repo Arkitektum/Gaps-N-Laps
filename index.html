@@ -12,7 +12,7 @@
 		<textarea class="input" v-model="input"></textarea>
 		<svg class="timeline">
 			<timespan
-			v-for="(timespan, key) in getTimespans()"
+			v-for="(timespan, key) in timespans"
 			v-bind:timespan="timespan"
 			v-bind:key="key"
 			class="timespan">
@@ -54,55 +54,8 @@
 			input: '',
 		},
 		methods: {
-			getTimespans: function() {
-
-				const regex = /\(([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]) - ([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])\)/g;
-				let m;
-				var timespanObjects = [];
-
-				while ((m = regex.exec(this.input)) !== null) {
-
-					if (m.index === regex.lastIndex)
-						regex.lastIndex++;
-
-					var startHours;
-					var startMinutes;
-					var endHours;
-					var endMinutes;
-
-					m.forEach((match, groupIndex) => {
-
-						if(groupIndex == 1)
-							startHours = match;
-
-						if(groupIndex == 2)
-							startMinutes = match;
-
-						if(groupIndex == 3)
-							endHours = match;
-
-						if(groupIndex == 4) {
-
-							endMinutes = match;
-
-							var timespanObject = {
-								"start": new Date(null, null, null, startHours, startMinutes),
-								"end": new Date(null, null, null, endHours, endMinutes),
-							};
-
-							timespanObjects.push(timespanObject);
-						}
-
-						console.log(`Found match, group ${groupIndex}: ${match}`);
-					});
-				};
-
-				timespanObjects.sort(function(a, b){return a.start - b.start});
-
-				return timespanObjects;
-			},
 			getFirstTimespan: function() {
-				return this.getTimespans()[0];
+				return this.timespans[0];
 			},
 			secondsToHoursAndSeconds: function(seconds) {
 
@@ -116,11 +69,14 @@
 			},
 		},
 		computed: {
+			timespans: function(){
+				return getTimespansFromInput(this.input);
+			},
 			totalTime: function() {
 				
 				var totalTime = 0;
 
-				this.getTimespans().forEach(function(timespan) {
+				this.timespans.forEach(function(timespan) {
 					totalTime += timespan.end - timespan.start;
 				});
 
@@ -129,6 +85,53 @@
 		}
 	});
 
+	function getTimespansFromInput(input) {
+
+		const regex = /\(([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]) - ([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])\)/g;
+		let m;
+		var timespanObjects = [];
+
+		while ((m = regex.exec(input)) !== null) {
+
+			if (m.index === regex.lastIndex)
+				regex.lastIndex++;
+
+			var startHours;
+			var startMinutes;
+			var endHours;
+			var endMinutes;
+
+			m.forEach((match, groupIndex) => {
+
+				if(groupIndex == 1)
+					startHours = match;
+
+				if(groupIndex == 2)
+					startMinutes = match;
+
+				if(groupIndex == 3)
+					endHours = match;
+
+				if(groupIndex == 4) {
+
+					endMinutes = match;
+
+					var timespanObject = {
+						"start": new Date(null, null, null, startHours, startMinutes),
+						"end": new Date(null, null, null, endHours, endMinutes),
+					};
+
+					timespanObjects.push(timespanObject);
+				}
+
+				console.log(`Found match, group ${groupIndex}: ${match}`);
+			});
+		};
+
+		timespanObjects.sort(function(a, b){return a.start - b.start});
+
+		return timespanObjects;
+	}
 </script>
 </body>
 </html>
