@@ -19,7 +19,7 @@
 		</timespan>
 	</svg>
 	<div> 
-		<p v-show="totalTime != '0:0'">Totaltid: {{ totalTime }}</p> 
+		<p v-show="totalWorkTime != '0:0'">Total arbeidstid: {{ totalWorkTime }}</p> 
 		<p v-show="totalGapTime != '0:0'">Total glipe-tid: {{ totalGapTime }}</p>
 	</div> 
 	<div class="demo-images">
@@ -70,15 +70,15 @@
 			timespans: function(){
 				return getTimespansFromInput(this.input);
 			},
-			totalTime: function() {
+			totalWorkTime: function() {
 				
-				var totalTime = 0;
+				var totalWorkTime = 0;
 
 				this.timespans.forEach(function(timespan) {
-					totalTime += timespan.end - timespan.start;
+					totalWorkTime += timespan.end - timespan.start;
 				});
 
-				return this.secondsToHoursAndSeconds(totalTime);
+				return this.secondsToHoursAndSeconds(totalWorkTime);
 			},
 			totalGapTime: function() {
 				
