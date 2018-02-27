@@ -10,8 +10,8 @@
 	height: 40px;
 }
 
-.demo-images {
-	margin-top: 100px;
+.demo-section {
+	margin-top: 50px;
 }
 
 .demo-images figure {
@@ -19,4 +19,21 @@
 	float: left;
 	border: 1px solid #adadad;
 	padding: 10px;
+}
+
+.info-button {
+	display: block;
+	width: 40px;
+	height: 40px;
+	border: 1px solid gray;
+	border-radius: 25px;
+	font-size: 2em;
+	text-align: center;
+	box-shadow: 3px 3px #888888;
+	cursor: pointer;
+}
+
+.info-button-down {
+	margin: 0 0 3px 3px;
+	box-shadow: 0px 0px black;
 }

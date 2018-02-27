@@ -23,15 +23,18 @@
 		<p v-show="totalGapTime != '0:0'">Total glipe-tid: {{ totalGapTime }}</p>
 		<p v-show="totalOverlapTime != '0:0'">Total overlapp-tid: {{ totalOverlapTime }}</p>
 	</div> 
-	<div class="demo-images">
-		<figure>
-			<figcaption><b>A)</b> Kopier timeføringer for aktuell dag slik at klokkeslettene kommer med</figcaption>
-			<img src="demo-cut.png" alt="Cut">
-		</figure>
-		<figure>
-			<figcaption><b>B)</b> Lim teksten inn i vinduet over og kontroller tidslinjen for gaps n' laps ;-)</figcaption>
-			<img src="demo-paste.png" alt="Paste">
-		</figure>
+	<div class="demo-section">
+		<b v-on:click="displayInfo = !displayInfo" class="info-button" v-bind:class="{ 'info-button-down' : displayInfo }">?</b>
+		<div class="demo-images" v-show="displayInfo">
+			<figure>
+				<figcaption><b>A)</b> Kopier timeføringer for aktuell dag slik at klokkeslettene kommer med</figcaption>
+				<img src="demo-cut.png" alt="Cut">
+			</figure>
+			<figure>
+				<figcaption><b>B)</b> Lim teksten inn i vinduet over og kontroller tidslinjen for gaps n' laps ;-)</figcaption>
+				<img src="demo-paste.png" alt="Paste">
+			</figure>
+		</div>
 	</div>
 </div>
 <script>
@@ -54,6 +57,7 @@
 		el: '#app',
 		data: {
 			input: '',
+			displayInfo: false,
 		},
 		methods: {
 			totalSeparationTimes: function() {
