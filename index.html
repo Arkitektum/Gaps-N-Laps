@@ -11,6 +11,7 @@
 	<h1>Gaps N' Laps</h1>
 	<div id="app">
 		<textarea class="input" v-model="input"></textarea>
+		<p v-if="timespans.length > 0">Arbeid fra kl. {{ workStartTime }} til kl. {{ workEndTime }}</p>
 		<svg class="timeline">
 			<timespan
 			v-for="(timespan, key) in timespans"
@@ -100,6 +101,18 @@
 			timespans: function(){
 				return getTimespansFromInput(this.input);
 			},
+			workStartTime: function() {
+
+				var workStart = this.timespans[0].start;
+
+				return padZero(workStart.getHours()) + ':' + padZero(workStart.getMinutes());
+			},
+			workEndTime: function() {
+				
+				var workEnd = this.timespans[this.timespans.length-1].end;
+
+				return padZero(workEnd.getHours()) + ':' + padZero(workEnd.getMinutes());
+			},
 			totalWorkTime: function() {
 				
 				var totalWorkTime = 0;
@@ -171,6 +184,10 @@
 		timespanObjects.sort(function(a, b){return a.start - b.start});
 
 		return timespanObjects;
+	}
+
+	function padZero(number) {
+		return number < 10 ? '0' + number : number;
 	}
 </script>
 </body>
