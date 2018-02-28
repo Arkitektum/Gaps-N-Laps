@@ -20,9 +20,9 @@
 		</timespan>
 	</svg>
 	<div> 
-		<p v-show="totalWorkTime != '0:0'">Total arbeidstid: {{ totalWorkTime }}</p> 
-		<p v-show="totalGapTime != '0:0'">Total glipe-tid: {{ totalGapTime }}</p>
-		<p v-show="totalOverlapTime != '0:0'">Total overlapp-tid: {{ totalOverlapTime }}</p>
+		<p v-show="totalWorkTime != '00:00'">Total arbeidstid: {{ totalWorkTime }}</p> 
+		<p v-show="totalGapTime != '00:00'">Total glipe-tid: {{ totalGapTime }}</p>
+		<p v-show="totalOverlapTime != '00:00'">Total overlapp-tid: {{ totalOverlapTime }}</p>
 	</div> 
 	<div class="demo-section">
 		<b v-on:click="displayInfo = !displayInfo" class="info-button" v-bind:class="{ 'info-button-down' : displayInfo }">?</b>
@@ -86,6 +86,12 @@
 
 				var mins = Math.floor(seconds / (1000 * 60));
 				seconds -= mins * (1000 * 60);
+
+				if (hours < 10)
+					hours = '0' + hours;
+
+				if (mins < 10)
+					mins = '0' + mins;
 
 				return hours + ":" + mins;
 			},
