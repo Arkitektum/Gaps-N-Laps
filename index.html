@@ -8,37 +8,53 @@
 	<script src="https://unpkg.com/vue"></script>
 </head>
 <body>
-	<h1>Gaps N' Laps</h1>
 	<div id="app">
-		<textarea class="input" v-model="input"></textarea>
-		<p v-if="timespans.length > 0">Arbeid fra kl. {{ workStartTime }} til kl. {{ workEndTime }}</p>
-		<svg class="timeline">
-			<timespan
-			v-for="(timespan, key) in timespans"
-			v-bind:timespan="timespan"
-			v-bind:key="key"
-			class="timespan">
-		</timespan>
-	</svg>
-	<div> 
-		<p v-show="totalWorkTime != '00:00'">Total arbeidstid: {{ totalWorkTime }}</p> 
-		<p v-show="totalGapTime != '00:00'">Total glipe-tid: {{ totalGapTime }}</p>
-		<p v-show="totalOverlapTime != '00:00'">Total overlapp-tid: {{ totalOverlapTime }}</p>
-	</div> 
-	<div class="demo-section">
-		<b v-on:click="displayInfo = !displayInfo" class="info-button" v-bind:class="{ 'info-button-down' : displayInfo }">?</b>
-		<div class="demo-images" v-show="displayInfo">
-			<figure>
-				<figcaption><b>A)</b> Kopier timeføringer for aktuell dag slik at klokkeslettene kommer med</figcaption>
-				<img src="demo-cut.png" alt="Cut">
-			</figure>
-			<figure>
-				<figcaption><b>B)</b> Lim teksten inn i vinduet over og kontroller tidslinjen for gaps n' laps ;-)</figcaption>
-				<img src="demo-paste.png" alt="Paste">
-			</figure>
+		<div class="navbar">
+			<span class="app-name">Gaps N' Laps</span>
+			<span v-on:click="displayInfo = !displayInfo" class="info-button" v-bind:class="{ 'info-button-down' : displayInfo }">?</span>
+		</div>
+		<div class="main">
+			<div class="demo-section container raised" v-show="displayInfo" style="margin-bottom: 30px;">
+				<div class="container-header">
+					<span class="container-title">Veiledning</span>
+					<span class="container-close" v-on:click="displayInfo = !displayInfo">×</span>
+				</div>
+				<div class="demo-images grid">
+					<div class="grid-element">
+						<figure>
+							<figcaption><b>A)</b> Kopier timeføringer for aktuell dag slik at klokkeslettene kommer med</figcaption>
+							<img src="demo-cut.png" alt="Cut">
+						</figure>
+					</div>
+					<div class="grid-element">
+						<figure>
+							<figcaption><b>B)</b> Lim teksten inn i vinduet over og kontroller tidslinjen for gaps n' laps ;-)</figcaption>
+							<img src="demo-paste.png" alt="Paste">
+						</figure>
+					</div>
+				</div>
+			</div>
+			<div class="container raised">
+				<textarea class="input" v-model="input"></textarea>
+				<p v-if="timespans.length > 0">Arbeid fra kl. {{ workStartTime }} til kl. {{ workEndTime }}</p>
+			</div>
+			<div class="container raised" v-if="timespans.length > 0" style="margin-top: 30px;">
+				<svg class="timeline">
+					<timespan
+					v-for="(timespan, key) in timespans"
+					v-bind:timespan="timespan"
+					v-bind:key="key"
+					class="timespan">
+					</timespan>
+				</svg>
+				<div> 
+					<p v-show="totalWorkTime != '00:00'">Total arbeidstid: {{ totalWorkTime }}</p> 
+					<p v-show="totalGapTime != '00:00'">Total glipe-tid: {{ totalGapTime }}</p>
+					<p v-show="totalOverlapTime != '00:00'">Total overlapp-tid: {{ totalOverlapTime }}</p>
+				</div> 
+			</div>
 		</div>
 	</div>
-</div>
 <script>
 
 	Vue.component('timespan', {
