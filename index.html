@@ -46,13 +46,15 @@
 		methods: {
 			getStartPos: function() {
 				var firstTimespan = this.$root.timespans[0];
-				return (this.timespan.start.getTime() - firstTimespan.start.getTime()) / 50000;
+				var startPos = (this.timespan.start.getTime() - firstTimespan.start.getTime()) / 864000;
+				return startPos + "%";
 			},
 			getSpan: function() {
-				return (this.timespan.end.getTime() - this.timespan.start.getTime()) / 50000;
+				var span = (this.timespan.end.getTime() - this.timespan.start.getTime()) / 864000;
+				return span + "%";
 			}
 		},
-		template: '<rect v-bind:x="getStartPos()" v-bind:width="getSpan()" height="30" style="fill:rgba(255,0,0,0.5); stroke-width:1; stroke:rgb(100,100,100)" />'
+		template: '<rect v-bind:x="getStartPos()" v-bind:width="getSpan()" height="100%" style="fill:rgba(255,0,0,0.5); stroke-width:1; stroke:rgb(100,100,100)" />'
 	});
 
 	var app = new Vue({
