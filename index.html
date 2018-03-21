@@ -35,7 +35,7 @@
 				</div>
 			</div>
 			<div class="container raised">
-				<textarea class="input" v-model="input"></textarea>
+				<textarea class="input" v-model="input" placeholder="Legg inn tekst som inneholder fra- og til-klokkesletter på formatet (tt:mm - tt:mm), f.eks: Lorem ipsum (08:00 - 09:00) dolor sit amet (09:15 - 10:40)"></textarea>
 				<p v-if="timespans.length > 0">Arbeid fra kl. {{ workStartTime }} til kl. {{ workEndTime }}</p>
 			</div>
 			<div class="container raised" v-if="timespans.length > 0" style="margin-top: 30px;">
