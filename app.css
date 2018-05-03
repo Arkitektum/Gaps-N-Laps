@@ -180,3 +180,18 @@ textarea:focus {
 	}
 }
 
+.sign {
+	font-size: 1.4em;
+}
+
+.checkmark {
+	color: green;
+}
+
+.warningsign {
+	color: orange;
+}
+
+.crossign {
+	color: red;
+}

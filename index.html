@@ -48,9 +48,23 @@
 					</timespan>
 				</svg>
 				<div> 
-					<p v-show="totalWorkTime != '00:00'">Total arbeidstid: {{ totalWorkTime }}</p> 
-					<p v-show="totalGapTime != '00:00'">Total glipe-tid: {{ totalGapTime }}</p>
-					<p v-show="totalOverlapTime != '00:00'">Total overlapp-tid: {{ totalOverlapTime }}</p>
+					<p v-show="totalWorkTime != '00:00'">Total arbeidstid: {{ totalWorkTime }}
+						<span v-if="totalWorkTime < '07:30'">
+							<span class="sign warningsign">&#x26a0;</span>
+							<small><i>Ikke full arbeidsdag</i></small>
+						</span>
+						<span v-else class="sign checkmark" title="Full arbeidsdag">&#10004;</span>
+					</p>
+					<p v-show="totalGapTime != '00:00'">Total glipe-tid: {{ totalGapTime }}
+						<span v-if="totalGapTime > '00:30'">
+							<span class="sign warningsign">&#x26a0;</span>
+							<small><i>Mer glipetid enn bare til lunsj</i></small>
+						</span>
+						<span v-else class="sign checkmark" title="Kun glipetid tilsvarende lunsj">&#10004;</span>
+					</p>
+					<p v-show="totalOverlapTime != '00:00'">Total overlapp-tid: {{ totalOverlapTime }}
+						<span class="sign crossign">&#10007;</span>
+					</p>
 				</div> 
 			</div>
 		</div>
